@@ -18,6 +18,7 @@ utils               = require 'src.libs.Utils'
 
 App                 = require 'src.App'
 effectsManager      = require 'src.game.engine.EffectsManager'
+touchController     = require 'src.game.engine.TouchController'
 
 --------------------------------------------------------------------------------
 
