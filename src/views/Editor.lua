@@ -23,34 +23,7 @@ end
 
 -- Called immediately after scene has moved onscreen:
 function scene:enterScene( event )
-    -- buildSheet()
-    app.game:loadLevel(LevelTest1)
-    -- app.game:loadLevel(Level01)
 end
-
---- To build a lua sheet config from PNG
-function buildSheet()
-    local r = {}
-    local height = 42
-    local width = 33
-
-    local lines = 1
-    local columns = 7
-
-    for j = 1,lines do
-        for i = columns,1,-1 do
-            r[i + (j-1)*columns] = {
-                x = 0 + (i-1)*width,
-                y = 0 + (j-1)*height,
-                height = height,
-                width = width
-            }
-        end
-    end
-
-    utils.table.show(r, 'r');
-end
-
 
 --------------------------------------------------------------------------------
 
