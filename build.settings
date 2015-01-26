@@ -1,0 +1,72 @@
+-- Supported values for orientation:
+-- portrait, portraitUpsideDown, landscapeLeft, landscapeRight
+
+settings = {
+
+    orientation = {
+        default = "landscapeRight",
+        supported = { "landscapeLeft", "landscapeRight" },
+    },
+
+    iphone = {
+        components = {},
+        plist = {
+            --CFBundleExecutable = "Adillions",
+            --UIStatusBarHidden = false,
+            --UIPrerenderedIcon = true, -- set to false for "shine" overlay
+            UIApplicationExitsOnSuspend = false,
+
+            FacebookAppID = "XXXXXXXXX",
+
+            CFBundleIconFile = "Icon",
+            CFBundleIconFiles = {
+                "Icon57" ,
+                "Icon60" ,
+                "Icon72" ,
+                "Icon76" ,
+            },
+
+            UIAppFonts =
+            {
+                "GillSans.ttf",
+                "HelveticaBold.ttf"
+            },
+
+            CFBundleURLTypes =
+            {
+                {
+                    CFBundleURLSchemes =
+                    {
+                        "fbXXXXXXXXX", -- replace XXXXXXXXX with your facebook appId
+                    }
+                }
+            }
+
+        }
+    },
+
+    -- Plugins
+
+    plugins =
+    {
+        --key is the name passed to Lua's 'require()'
+        ["CoronaProvider.native.popup.social"] =
+        {
+            --required
+            publisherId = "com.coronalabs",
+        },
+    },
+
+
+    -- Android permissions
+
+    androidPermissions = {
+        -- "com.android.vending.BILLING",
+        -- "android.permission.INTERNET",
+        -- "android.permission.ACCESS_NETWORK_STATE",
+        -- "android.permission.READ_PHONE_STATE",
+        -- "android.permission.WRITE_EXTERNAL_STORAGE",
+        -- "android.permission.ACCESS_WIFI_STATE"
+    }
+
+}
