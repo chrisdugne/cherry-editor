@@ -162,6 +162,25 @@ function prepareMenu()
     app.itemsBounds.strokeWidth = 1
     app.itemsBounds:setFillColor( 0.12 )
     app.itemsBounds:setStrokeColor( 225/255, 225/255, 225/255 )
+
+    local lfs = require "lfs"
+
+    local baseDir = system.pathForFile('main.lua'):gsub("main.lua", "")
+    local rooms   = baseDir .. 'assets/images/rooms/'
+
+    local verticalPosition = 1
+    for file in lfs.dir(rooms) do
+        if(not utils.string.startsWith(file, '.')) then
+            local item =  display.newImage(
+                app.items,
+                'assets/images/rooms/' .. file,
+                120, 50 + verticalPosition * 120
+            )
+
+            verticalPosition = verticalPosition + 1
+            app.items:insert(item)
+        end
+    end
 end
 
 --------------------------------------------------------------------------------
