@@ -64,16 +64,13 @@ function prepareScreen()
 
     --------------------------------------
 
-    local center = display.newRect(
-        app.screen.level,
-        0, 0,
-        Room.WIDTH,
-        Room.HEIGHT
-    )
+    local center1 = display.newLine( app.screen.level, 0, -Room.HEIGHT/4, 0, Room.HEIGHT/4)
+    local center2 = display.newLine( app.screen.level, -Room.WIDTH/4, 0, Room.WIDTH/4, 0)
 
-    center.strokeWidth = 1
-    center:setFillColor( 0.12 )
-    center:setStrokeColor( 225/255, 25/255, 125/255 )
+    center1.strokeWidth = 2
+    center2.strokeWidth = 2
+    center1:setStrokeColor( 225/255, 25/255, 125/255 )
+    center2:setStrokeColor( 225/255, 25/255, 125/255 )
     centerLevel()
 
 end
