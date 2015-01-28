@@ -20,7 +20,6 @@ function scene:createScene( event )
     prepareScreen()
     prepareToolbar()
     prepareMenu()
-    touchController.start()
 end
 
 --------------------------------------------------------------------------------
@@ -42,16 +41,6 @@ function prepareScreen()
 
     --------------------------------------
 
-    -- prepare for toucheController dragging
-    app.screen.markX   = 0
-    app.screen.markY   = 0
-    app.screen.offsetX = 0
-    app.screen.offsetY = 0
-    app.screen.xStart  = 0
-    app.screen.yStart  = 0
-
-    --------------------------------------
-
     app.screenBounds = display.newRect(
         app.screen,
         0, 0,
@@ -65,6 +54,10 @@ function prepareScreen()
 
     app.screen.level = display.newGroup()
     app.screen:insert(app.screen.level)
+
+    app.screen:addEventListener( "touch", function(event)
+        touchController.drag(app.screen.level, event)
+    end)
 
     --------------------------------------
 
