@@ -8,12 +8,13 @@ local Menu = {}
 
 Menu.prepare = function ()
 
-    app.items = display.newGroup()
+    app.menu = display.newGroup()
+    touchController.blockTouches(app.menu)
 
     ----------------------------------------------------------------------------
 
     app.itemsBounds = display.newRect(
-        app.items,
+        app.menu,
         0,
         TOOLBAR_HEIGHT + 1, -- note : +1 -> strokeWidth
         ITEMS_WIDTH,
@@ -36,18 +37,14 @@ end
 
 function selectItem(item)
 
-    print('--------')
-    print(app.selectedItem, item)
     local sameItem = app.selectedItem == item
 
     if(app.selectedItem) then
-        print('yet selectedItem')
         app.selectedItem.strokeWidth = 0
         app.selectedItem = nil
     end
 
     if(not sameItem) then
-        print('new selection')
         app.selectedItem = item
         item.strokeWidth = 4
         item:setStrokeColor( 25/255, 125/255, 25/255 )
@@ -66,15 +63,17 @@ function list(folder)
 
     for file in lfs.dir(rooms) do
         if(not utils.string.startsWith(file, '.')) then
+            local imagePath = 'assets/images/' .. folder .. '/' .. file
             local item =  display.newImage(
-                app.items,
-                'assets/images/' .. folder .. '/' .. file,
-                120, 50 + app.items.numChildren * 120
+                app.menu,
+                imagePath,
+                120, 50 + app.menu.numChildren * 120
             )
 
+            item.imagePath = imagePath
             utils.onTouch(item, selectItem)
 
-            app.items:insert(item)
+            app.menu:insert(item)
         end
     end
 end

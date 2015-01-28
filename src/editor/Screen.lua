@@ -32,9 +32,15 @@ Screen.prepare = function ()
     app.screen.level = display.newGroup()
     app.screen:insert(app.screen.level)
 
-    app.screen:addEventListener( "touch", function(event)
-        touchController.drag(app.screen.level, event)
+    touchController.addTap(app.screen, function(event)
+        if(app.selectedItem) then
+            local clone = display.newImage(app.screen.level, app.selectedItem.imagePath)
+            clone.x = event.x - app.screen.level.x - app.screen.x
+            clone.y = event.y - app.screen.level.y - app.screen.y
+        end
     end)
+
+    touchController.addDrag(app.screen, app.screen.level)
 
     --------------------------------------
 

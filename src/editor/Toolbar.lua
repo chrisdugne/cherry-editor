@@ -9,6 +9,7 @@ local Toolbar = {}
 Toolbar.prepare = function ()
 
     app.toolbar = display.newGroup()
+    touchController.blockTouches(app.toolbar)
 
     --------------------------------------
 
