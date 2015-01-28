@@ -17,6 +17,10 @@ utils               = require 'src.libs.Utils'
 ---- App packages
 
 App                 = require 'src.App'
+Screen              = require 'src.editor.Screen'
+Menu                = require 'src.editor.Menu'
+Toolbar             = require 'src.editor.Toolbar'
+Tools               = require 'src.editor.Tools'
 effectsManager      = require 'src.game.engine.EffectsManager'
 touchController     = require 'src.game.engine.TouchController'
 
