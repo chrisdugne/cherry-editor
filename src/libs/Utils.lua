@@ -16,9 +16,9 @@ module(..., package.seeall)
 --------------------------------------------------------------------------------
 
 function onTouch(object, action)
-    object:addEventListener    ("touch", function(event)
+    object:addEventListener("touch", function(event)
         if(event.phase == "began") then
-            action()
+            action(object)
         end
         return true
     end)
