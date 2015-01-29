@@ -13,6 +13,17 @@ end
 
 --------------------------------------------------------------------------------
 
+Tools.toggleSnapGrid = function ()
+    app.screen.gridVisible = not app.screen.gridVisible
+    if(app.screen.gridVisible) then
+        Tools.showSnapGrid()
+    else
+        Tools.hideSnapGrid()
+    end
+end
+
+--------------------------------------------------------------------------------
+
 Tools.hideSnapGrid = function ()
     display.remove(app.screen.grid)
     app.screen.grid = nil

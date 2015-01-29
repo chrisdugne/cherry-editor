@@ -53,14 +53,7 @@ Toolbar.prepare = function ()
 
     snapping.anchorX = 0
 
-    utils.onTouch(snapping, function()
-        app.screen.gridVisible = not app.screen.gridVisible
-        if(app.screen.gridVisible) then
-            Tools.showSnapGrid()
-        else
-            Tools.hideSnapGrid()
-        end
-    end)
+    utils.onTouch(snapping, Tools.toggleSnapGrid)
 
 end
 

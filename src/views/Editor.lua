@@ -20,6 +20,8 @@ function scene:createScene( event )
     Screen.prepare()
     Toolbar.prepare()
     Menu.prepare()
+
+    Tools.toggleSnapGrid()
 end
 
 --------------------------------------------------------------------------------
