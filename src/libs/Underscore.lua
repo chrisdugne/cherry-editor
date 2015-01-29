@@ -9,7 +9,7 @@ local Underscore = {}
 
 --------------------------------------------------------------------------------
 
-Underscore.extend = function (destination, source)
+function Underscore:extend (destination, source)
     for k,v in pairs(source) do
     destination[k] = v
     end

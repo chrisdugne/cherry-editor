@@ -21,10 +21,13 @@ Screen              = require 'src.editor.Screen'
 Menu                = require 'src.editor.Menu'
 Toolbar             = require 'src.editor.Toolbar'
 Tools               = require 'src.editor.Tools'
+LevelBuilder        = require 'src.editor.LevelBuilder'
 effectsManager      = require 'src.game.engine.EffectsManager'
 touchController     = require 'src.game.engine.TouchController'
 
 --------------------------------------------------------------------------------
+
+levelBuilder = LevelBuilder:new()
 
 app = App:new()
 app:start()
