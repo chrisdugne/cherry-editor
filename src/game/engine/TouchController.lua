@@ -6,19 +6,19 @@ local TouchController = {}
 -- API
 --------------------------------------------------------------------------------
 
-TouchController.blockTouches = function (listener, content)
+function TouchController:blockTouches (listener, content)
     listener:addEventListener( 'touch', function(event)
         return true
     end)
 end
 
-TouchController.addDrag = function (listener, content)
+function TouchController:addDrag (listener, content)
     listener:addEventListener( 'touch', function(event)
         drag(content, event)
     end)
 end
 
-TouchController.addTap = function (listener, action)
+function TouchController:addTap (listener, action)
     listener:addEventListener( 'touch', function(event)
         tap(event, action)
     end)

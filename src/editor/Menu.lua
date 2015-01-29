@@ -6,7 +6,7 @@ local Menu = {}
 
 --------------------------------------------------------------------------------
 
-Menu.prepare = function ()
+function Menu:prepare ()
 
     app.menu = display.newGroup()
     touchController.blockTouches(app.menu)

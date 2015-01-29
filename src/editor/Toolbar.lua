@@ -6,7 +6,7 @@ local Toolbar = {}
 
 --------------------------------------------------------------------------------
 
-Toolbar.prepare = function ()
+function Toolbar:prepare ()
 
     app.toolbar = display.newGroup()
     touchController.blockTouches(app.toolbar)

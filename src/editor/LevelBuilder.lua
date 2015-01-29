@@ -64,7 +64,6 @@ function LevelBuilder:addFloatingItem(item, event)
     item.data = {
         x = item.x,
         y = item.y,
-        y = item.y,
         content = {}
     }
 

@@ -6,7 +6,7 @@ local Screen = {}
 
 --------------------------------------------------------------------------------
 
-Screen.prepare = function ()
+function Screen:prepare ()
 
     app.screen   = display.newGroup()
     app.screen.x = ITEMS_WIDTH

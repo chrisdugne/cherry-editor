@@ -6,14 +6,14 @@ local Tools = {}
 
 --------------------------------------------------------------------------------
 
-Tools.centerLevel = function ()
+function Tools:centerLevel ()
     app.screen.level.x = SCREEN_WIDTH/2
     app.screen.level.y = SCREEN_HEIGHT/2
 end
 
 --------------------------------------------------------------------------------
 
-Tools.toggleSnapGrid = function ()
+function Tools:toggleSnapGrid ()
     app.screen.gridVisible = not app.screen.gridVisible
     if(app.screen.gridVisible) then
         Tools.showSnapGrid()
@@ -24,14 +24,14 @@ end
 
 --------------------------------------------------------------------------------
 
-Tools.hideSnapGrid = function ()
+function Tools:hideSnapGrid ()
     display.remove(app.screen.grid)
     app.screen.grid = nil
 end
 
 --------------------------------------------------------------------------------
 
-Tools.showSnapGrid = function ()
+function Tools:showSnapGrid ()
 
     app.screen.grid = display.newGroup()
     app.screen.grid.lines = {}
