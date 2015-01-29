@@ -31,8 +31,11 @@ function LevelBuilder:addItem(event)
             self:addFloatingItem(item, event)
         end
     end
-    -- print('----- addItem')
-    -- utils.tprint(self.items)
+end
+
+function LevelBuilder:export()
+    print('----- Export')
+    utils.tprint(self.items)
 end
 
 --------------------------------------------------------------------------------

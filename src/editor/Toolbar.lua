@@ -30,31 +30,35 @@ function Toolbar:prepare ()
     --------------------------------------
     -- Button to center
 
-    local toCenter = display.newImage(
-        app.toolbar,
-        'assets/images/editor/noun_33953_cc.png',
-        buttonX(1), TOOLBAR_HEIGHT/2
-    )
-
-    toCenter.anchorX = 0
-
-    utils.onTouch(toCenter, function()
-        Tools.centerLevel()
-    end)
+    addButton(1, 'assets/images/editor/noun_33953_cc.png', Tools.centerLevel)
 
     --------------------------------------
     -- Button toggle grid snapping
 
-    local snapping = display.newImage(
+    addButton(2, 'assets/images/editor/snap-grid.png', Tools.toggleSnapGrid)
+
+    --------------------------------------
+    -- Button to export
+
+    addButton(17, 'assets/images/editor/noun_20381_cc.png', function()
+        levelBuilder:export()
+    end)
+
+end
+
+-------------------------------------
+
+function addButton(position, icon, action)
+    local button = display.newImage(
         app.toolbar,
-        'assets/images/editor/snap-grid.png',
-        buttonX(2), TOOLBAR_HEIGHT/2
+        icon,
+        buttonX(position),
+        TOOLBAR_HEIGHT/2
     )
 
-    snapping.anchorX = 0
+    button.anchorX = 0
 
-    utils.onTouch(snapping, Tools.toggleSnapGrid)
-
+    utils.onTouch(button, action)
 end
 
 -------------------------------------

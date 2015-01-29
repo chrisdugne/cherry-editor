@@ -53,13 +53,11 @@ function Tools:showSnapGrid ()
             Room.HEIGHT*20
         )
 
-        hLine.stroke.effect = "generator.marchingAnts"
         hLine.strokeWidth = 2
-        hLine:setStrokeColor( 245/255, 245/255, 245/255 )
+        hLine:setStrokeColor( 75/255, 75/255, 75/255 )
 
-        vLine.stroke.effect = "generator.marchingAnts"
         vLine.strokeWidth = 2
-        vLine:setStrokeColor( 245/255, 245/255, 245/255 )
+        vLine:setStrokeColor( 75/255, 75/255, 75/255 )
 
     end
 
