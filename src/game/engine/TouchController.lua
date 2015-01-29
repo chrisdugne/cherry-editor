@@ -6,7 +6,7 @@ local TouchController = {}
 -- API
 --------------------------------------------------------------------------------
 
-function TouchController:blockTouches (listener, content)
+function TouchController:stopPropagation (listener, content)
     listener:addEventListener( 'touch', function(event)
         return true
     end)

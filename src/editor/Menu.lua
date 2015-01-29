@@ -9,7 +9,7 @@ local Menu = {}
 function Menu:prepare ()
 
     app.menu = display.newGroup()
-    touchController.blockTouches(app.menu)
+    touchController:stopPropagation(app.menu)
 
     ----------------------------------------------------------------------------
 

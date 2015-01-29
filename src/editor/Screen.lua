@@ -32,8 +32,11 @@ function Screen:prepare ()
     app.screen.level = display.newGroup()
     app.screen:insert(app.screen.level)
 
-    touchController.addTap(app.screen, function(event) levelBuilder:addItem(event) end)
-    touchController.addDrag(app.screen, app.screen.level)
+    touchController:addTap(app.screen, function(event)
+        levelBuilder:addItem(event)
+    end)
+
+    touchController:addDrag(app.screen, app.screen.level)
 
     --------------------------------------
 
