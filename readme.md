@@ -16,6 +16,6 @@ used as the [center level button](http://thenounproject.com/term/shrink/33953/) 
 
 used as the [export button](http://thenounproject.com/term/shrink/20381/) : Created by Daniel Hug
 
-<a href="http://thenounproject.com/term/shrink/25665/"><img align="left" height="32" width="32" hspace="10" src="https://d30y9cdsu7xlg0.cloudfront.net/png/25665-200.png"></a>
+<a href="http://thenounproject.com/term/shrink/25665/"><img align="left" style="width:32px; height:32px; padding-right:10px;" src="https://d30y9cdsu7xlg0.cloudfront.net/png/25665-200.png"></a>
 
 used as the [import button](http://thenounproject.com/term/shrink/25665/) : Created by Garrett Knoll
