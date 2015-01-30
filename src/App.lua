@@ -21,6 +21,13 @@ function App:start()
 
     ----------------------------------------------------------------------------
 
+    LEVELS_FOLDER = '/Users/mad/Projects/Uralys/Doors/assets/levels'
+    EXPORT_LEVEL  = '/level-editor/level-editor.json'
+    IMPORT_LEVEL  = '/level-editor/level-editor.json'
+    -- IMPORT_LEVEL  = '/chapter-1/level-1.json'
+
+    ----------------------------------------------------------------------------
+
     print('---------------------- '
         .. APP_NAME
         .. ' ----------------')
@@ -29,6 +36,12 @@ function App:start()
     --- iOS Status Bar
 
     display.setStatusBar( display.HiddenStatusBar )
+
+    ----------------------------------------------------------------------------
+
+    IOS         = system.getInfo( 'platformName' )  == 'iPhone OS'
+    ANDROID     = system.getInfo( 'platformName' )  == 'Android'
+    SIMULATOR   = system.getInfo( 'environment' )   == 'simulator'
 
     ----------------------------------------------------------------------------
 

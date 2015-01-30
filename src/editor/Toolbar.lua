@@ -40,14 +40,14 @@ function Toolbar:prepare ()
     --------------------------------------
     -- Button to import
 
-    addButton(16, 'assets/images/editor/noun_25665_cc.png', function()
-        levelBuilder:export()
+    addButton(14, 'assets/images/editor/noun_25665_cc.png', function()
+        levelBuilder:import()
     end)
 
     --------------------------------------
     -- Button to export
 
-    addButton(17, 'assets/images/editor/noun_20381_cc.png', function()
+    addButton(15, 'assets/images/editor/noun_20381_cc.png', function()
         levelBuilder:export()
     end)
 
@@ -71,7 +71,7 @@ end
 -------------------------------------
 
 function buttonX(position)
-    return 10 + 70 * ( position - 1 )
+    return 10 + 80 * ( position - 1 )
 end
 
 -------------------------------------

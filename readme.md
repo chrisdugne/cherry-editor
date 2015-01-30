@@ -11,12 +11,12 @@ Grab some functions from [Underscore.Lua](https://github.com/mirven/underscore.l
 
 <a href="http://thenounproject.com/term/shrink/20381/"><img align="left" height="32" width="32" hspace="10" src="https://d30y9cdsu7xlg0.cloudfront.net/png/20381-200.png"></a>
 
-used as the [export button](http://thenounproject.com/term/shrink/20381/) : Created by Daniel Hug
+used as the [export button](http://thenounproject.com/term/shrink/20381/) : created by Daniel Hug
 
 <a href="http://thenounproject.com/term/shrink/25665/"><img align="left" height="32" width="32" hspace="10" src="https://d30y9cdsu7xlg0.cloudfront.net/png/25665-200.png"></a>
 
-used as the [import button](http://thenounproject.com/term/shrink/25665/) : Created by Garrett Knoll
+used as the [import button](http://thenounproject.com/term/shrink/25665/) : created by Garrett Knoll
 
 <a href="http://thenounproject.com/term/shrink/33953/"><img align="left" height="32" width="32" hspace="10" src="https://d30y9cdsu7xlg0.cloudfront.net/png/33953-200.png"></a>
 
-used as the [center level button](http://thenounproject.com/term/shrink/33953/) : Created by Berkay Sargın
+used as the [center level button](http://thenounproject.com/term/shrink/33953/) : created by Berkay Sargın

@@ -35,6 +35,25 @@ function LevelBuilder:addItem(event)
     end
 end
 
+--------------------------------------------------------------------------------
+
+function LevelBuilder:import()
+    print('------ Importing ' .. LEVELS_FOLDER .. IMPORT_LEVEL)
+    local file = io.open( LEVELS_FOLDER .. IMPORT_LEVEL, "r" )
+    if file then
+        -- read all contents of file into a string
+        local contents = file:read( "*a" )
+        print(contents)
+        local myTable = json.decode(contents);
+        utils.tprint(myTable)
+        io.close( file )
+    end
+
+    print('---------')
+end
+
+--------------------------------------------------------------------------------
+
 function LevelBuilder:export()
 
     native.setActivityIndicator( true )
@@ -47,13 +66,14 @@ function LevelBuilder:export()
     end
 
     local finalJSON = json.encode(t)
+    print(finalJSON)
 
-    local path = system.pathForFile( 'output.json' )
-
-    local file = io.open(path, "w")
-    if file then
-        file:write( finalJSON )
-        io.close( file )
+    if(SIMULATOR) then
+        os.execute( "echo '" .. finalJSON .. "' > " ..
+            LEVELS_FOLDER .. EXPORT_LEVEL
+        )
+    else
+        self:deviceExport(finalJSON)
     end
 
     timer.performWithDelay(300, function()
@@ -94,6 +114,19 @@ function LevelBuilder:addFloatingItem(item, event)
     })
 
     self.items[#self.items + 1] = item.data
+end
+
+--------------------------------------------------------------------------------
+
+--- saving on the device
+function LevelBuilder:deviceExport(finalJSON)
+    local path = system.pathForFile( 'output.json', system.DocumentsDirectory )
+    local file = io.open(path, "w")
+
+    if file then
+        file:write( finalJSON )
+        io.close( file )
+    end
 end
 
 --------------------------------------------------------------------------------
