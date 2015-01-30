@@ -38,6 +38,13 @@ function Toolbar:prepare ()
     addButton(2, 'assets/images/editor/snap-grid.png', Tools.toggleSnapGrid)
 
     --------------------------------------
+    -- Button to import
+
+    addButton(16, 'assets/images/editor/noun_25665_cc.png', function()
+        levelBuilder:export()
+    end)
+
+    --------------------------------------
     -- Button to export
 
     addButton(17, 'assets/images/editor/noun_20381_cc.png', function()
