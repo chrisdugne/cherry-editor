@@ -30,7 +30,7 @@ function Menu:prepare ()
 
     ----------------------------------------------------------------------------
 
-    list('rooms')
+    list('room')
 end
 
 --------------------------------------------------------------------------------
@@ -55,22 +55,28 @@ end
 
 --------------------------------------------------------------------------------
 
-function list(folder)
+function list(name)
     local lfs = require "lfs"
 
     local baseDir = system.pathForFile('main.lua'):gsub("main.lua", "")
-    local rooms   = baseDir .. 'assets/images/' .. folder
+    local folder  = baseDir .. 'assets/images/game/' .. name
 
-    for file in lfs.dir(rooms) do
-        if(not utils.string.startsWith(file, '.')) then
-            local imagePath = 'assets/images/' .. folder .. '/' .. file
-            local item =  display.newImage(
+    for file in lfs.dir(folder) do
+        if(utils.string.startsWith(file, name)) then
+            local params    = utils.split(file, '.')
+            local imagePath = 'assets/images/game/' .. name .. '/' .. file
+            local item      = display.newImage(
                 app.menu,
                 imagePath,
                 120, 50 + app.menu.numChildren * 120
             )
 
             item.imagePath = imagePath
+            item.data = {
+                item = params[1],
+                type = params[2]
+            }
+
             utils.onTouch(item, selectItem)
 
             app.menu:insert(item)

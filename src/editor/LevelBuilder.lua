@@ -25,6 +25,8 @@ function LevelBuilder:addItem(event)
             app.selectedItem.imagePath
         )
 
+        item.data = app.selectedItem.data
+
         if(app.screen.grid) then
             self:addGridItem(item, event)
         else
@@ -34,8 +36,29 @@ function LevelBuilder:addItem(event)
 end
 
 function LevelBuilder:export()
-    print('----- Export')
-    utils.tprint(self.items)
+
+    native.setActivityIndicator( true )
+
+    local t = {}
+    for x,line in pairs(self.items) do
+        for y,item in pairs(line) do
+            t[#t+1] = item
+        end
+    end
+
+    local finalJSON = json.encode(t)
+
+    local path = system.pathForFile( 'output.json' )
+
+    local file = io.open(path, "w")
+    if file then
+        file:write( finalJSON )
+        io.close( file )
+    end
+
+    timer.performWithDelay(300, function()
+        native.setActivityIndicator( false )
+    end)
 end
 
 --------------------------------------------------------------------------------
@@ -49,11 +72,11 @@ function LevelBuilder:addGridItem(item, event)
     local gridY = math.floor(realY/Room.HEIGHT)
     item.x = (gridX + 0.5) * Room.WIDTH
     item.y = (gridY + 0.5) * Room.HEIGHT
-    item.data = {
+
+    _.extend(item.data, {
         x = gridX,
-        y = gridY,
-        content = {}
-    }
+        y = gridY
+    })
 
     if(not self.items[gridX]) then self.items[gridX] = {} end
     self.items[gridX][gridY] = item.data
@@ -64,11 +87,11 @@ end
 function LevelBuilder:addFloatingItem(item, event)
     item.x = event.x - app.screen.level.x - app.screen.x
     item.y = event.y - app.screen.level.y - app.screen.y
-    item.data = {
+
+    _.extend(item.data, {
         x = item.x,
-        y = item.y,
-        content = {}
-    }
+        y = item.y
+    })
 
     self.items[#self.items + 1] = item.data
 end

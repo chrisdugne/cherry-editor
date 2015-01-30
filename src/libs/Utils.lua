@@ -254,7 +254,7 @@ function request(url, method, next, data, type)
     -- end
 
     ----------------------------------------
-
+    print('-----> request')
     network.request( url, method, next, {
         headers = headers,
         body    = data

@@ -8,12 +8,9 @@ local Screen = {}
 
 function Screen:prepare ()
 
-    app.screen   = display.newGroup()
-    app.screen.x = ITEMS_WIDTH
-    app.screen.y = TOOLBAR_HEIGHT
-
-    --------------------------------------
-
+    app.screen             = display.newGroup()
+    app.screen.x           = ITEMS_WIDTH
+    app.screen.y           = TOOLBAR_HEIGHT
     app.screen.gridVisible = false
 
     --------------------------------------
@@ -29,6 +26,8 @@ function Screen:prepare ()
     app.screenBounds.anchorY = 0
     app.screenBounds:setFillColor( 0.12 )
 
+    --------------------------------------
+
     app.screen.level = display.newGroup()
     app.screen:insert(app.screen.level)
 
@@ -40,23 +39,11 @@ function Screen:prepare ()
 
     --------------------------------------
 
-    local center1 = display.newLine(
-        app.screen.level, 0, -Room.HEIGHT/4, 0, Room.HEIGHT/4
-    )
-
-    local center2 = display.newLine(
-        app.screen.level, -Room.WIDTH/4, 0, Room.WIDTH/4, 0
-    )
-
-    center1.strokeWidth = 2
-    center2.strokeWidth = 2
-    center1:setStrokeColor( 225/255, 25/255, 125/255 )
-    center2:setStrokeColor( 225/255, 25/255, 125/255 )
-
+    Tools.drawCenter()
     Tools.centerLevel()
 
 end
 
--------------------------------------
+--------------------------------------------------------------------------------
 
 return Screen

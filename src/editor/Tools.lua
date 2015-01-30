@@ -6,6 +6,25 @@ local Tools = {}
 
 --------------------------------------------------------------------------------
 
+function Tools:drawCenter ()
+
+    local center1 = display.newLine(
+        app.screen.level, 0, -Room.HEIGHT/4, 0, Room.HEIGHT/4
+    )
+
+    local center2 = display.newLine(
+        app.screen.level, -Room.WIDTH/4, 0, Room.WIDTH/4, 0
+    )
+
+    center1.strokeWidth = 2
+    center2.strokeWidth = 2
+    center1:setStrokeColor( 225/255, 25/255, 125/255 )
+    center2:setStrokeColor( 225/255, 25/255, 125/255 )
+
+end
+
+--------------------------------------------------------------------------------
+
 function Tools:centerLevel ()
     app.screen.level.x = SCREEN_WIDTH/2
     app.screen.level.y = SCREEN_HEIGHT/2
