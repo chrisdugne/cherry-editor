@@ -18,7 +18,24 @@ end
 -- API
 --------------------------------------------------------------------------------
 
-function LevelBuilder:addItem(event)
+function LevelBuilder:reset()
+    Screen.reset()
+
+    if(app.screen.grid) then
+        Tools.hideSnapGrid()
+    end
+
+    app.screen.level = display.newGroup()
+    app.screen:insert(app.screen.level)
+
+    Screen.touching()
+    Screen.center()
+end
+
+--------------------------------------------------------------------------------
+
+--- drop an item from the menu
+function LevelBuilder:dropItem(event)
     if(app.selectedItem) then
         local item = display.newImage(
             app.screen.level,
@@ -28,7 +45,11 @@ function LevelBuilder:addItem(event)
         item.data = app.selectedItem.data
 
         if(app.screen.grid) then
-            self:addGridItem(item, event)
+            local realX = event.x - app.screen.level.x - app.screen.x
+            local realY = event.y - app.screen.level.y - app.screen.y
+            local gridX = math.floor(realX/Room.WIDTH)
+            local gridY = math.floor(realY/Room.HEIGHT)
+            self:addGridItem(item, gridX, gridY)
         else
             self:addFloatingItem(item, event)
         end
@@ -37,19 +58,51 @@ end
 
 --------------------------------------------------------------------------------
 
+--- load a json item
+function LevelBuilder:loadJSONItem(jsonItem)
+    local type = jsonItem.type
+    local name = jsonItem.item
+    local imagePath = 'assets/images/game/' ..
+                         name .. '/' ..
+                         name .. '.' .. type .. '.png'
+
+    print(imagePath)
+
+    local item = display.newImage(
+        app.screen.level,
+        imagePath
+    )
+
+    item.data = jsonItem
+
+    if(app.screen.grid) then
+        self:addGridItem(item, jsonItem.x, jsonItem.y)
+    else
+        self:addFloatingItem(item, jsonItem.x, jsonItem.y)
+    end
+end
+
+--------------------------------------------------------------------------------
+
 function LevelBuilder:import()
     print('------ Importing ' .. LEVELS_FOLDER .. IMPORT_LEVEL)
+    self:reset()
+
+    local level = {}
     local file = io.open( LEVELS_FOLDER .. IMPORT_LEVEL, "r" )
     if file then
         -- read all contents of file into a string
         local contents = file:read( "*a" )
-        print(contents)
-        local myTable = json.decode(contents);
-        utils.tprint(myTable)
+        level = json.decode(contents);
         io.close( file )
     end
 
-    print('---------')
+    if(level.grid) then
+        Tools.toggleSnapGrid()
+        for k,jsonItem in pairs(level.items) do
+            self:loadJSONItem(jsonItem)
+        end
+    end
 end
 
 --------------------------------------------------------------------------------
@@ -58,15 +111,33 @@ function LevelBuilder:export()
 
     native.setActivityIndicator( true )
 
-    local t = {}
+    ------------------------------------
+    -- settings
+
+    local level = {
+        items = {},
+        grid  = app.screen.grid ~= nil
+    }
+
+    ------------------------------------
+    -- items
+
     for x,line in pairs(self.items) do
-        for y,item in pairs(line) do
-            t[#t+1] = item
+        for y,itemData in pairs(line) do
+            utils.tprint(itemData)
+            print('exporting : ' .. itemData.item .. ' ' .. itemData.type ..
+                    ' at [' .. itemData.x .. '][' .. itemData.y .. ']')
+
+            level.items[#level.items+1] = itemData
         end
     end
 
-    local finalJSON = json.encode(t)
-    print(finalJSON)
+    ------------------------------------
+
+    local finalJSON = json.encode(level)
+
+    ------------------------------------
+    --  export
 
     if(SIMULATOR) then
         os.execute( "echo '" .. finalJSON .. "' > " ..
@@ -75,6 +146,9 @@ function LevelBuilder:export()
     else
         self:deviceExport(finalJSON)
     end
+
+    ------------------------------------
+    -- release
 
     timer.performWithDelay(300, function()
         native.setActivityIndicator( false )
@@ -85,11 +159,10 @@ end
 -- private use
 --------------------------------------------------------------------------------
 
-function LevelBuilder:addGridItem(item, event)
-    local realX = event.x - app.screen.level.x - app.screen.x
-    local realY = event.y - app.screen.level.y - app.screen.y
-    local gridX = math.floor(realX/Room.WIDTH)
-    local gridY = math.floor(realY/Room.HEIGHT)
+function LevelBuilder:addGridItem(item, gridX, gridY)
+    print('adding on grid : ' .. item.data.item .. ' ' .. item.data.type ..
+            ' at [' .. gridX .. '][' .. gridY .. ']')
+
     item.x = (gridX + 0.5) * Room.WIDTH
     item.y = (gridY + 0.5) * Room.HEIGHT
 

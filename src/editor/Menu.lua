@@ -50,7 +50,6 @@ function selectItem(item)
         item:setStrokeColor( 25/255, 125/255, 25/255 )
     end
 
-    print(app.selectedItem, item)
 end
 
 --------------------------------------------------------------------------------

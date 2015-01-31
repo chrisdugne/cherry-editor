@@ -33,8 +33,7 @@ end
 --------------------------------------------------------------------------------
 
 function Tools:toggleSnapGrid ()
-    app.screen.gridVisible = not app.screen.gridVisible
-    if(app.screen.gridVisible) then
+    if(not app.screen.grid) then
         Tools.showSnapGrid()
     else
         Tools.hideSnapGrid()

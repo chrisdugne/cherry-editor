@@ -6,12 +6,18 @@ local Screen = {}
 
 --------------------------------------------------------------------------------
 
-function Screen:prepare ()
+function Screen:reset()
+    if(app.screen.level) then
+        app.screen.removeDrag()
+        display.remove(app.screen.level)
+    end
+end
 
-    app.screen             = display.newGroup()
-    app.screen.x           = ITEMS_WIDTH
-    app.screen.y           = TOOLBAR_HEIGHT
-    app.screen.gridVisible = false
+function Screen:prepare()
+
+    app.screen   = display.newGroup()
+    app.screen.x = ITEMS_WIDTH
+    app.screen.y = TOOLBAR_HEIGHT
 
     --------------------------------------
 
@@ -28,20 +34,20 @@ function Screen:prepare ()
 
     --------------------------------------
 
-    app.screen.level = display.newGroup()
-    app.screen:insert(app.screen.level)
+    levelBuilder:reset()
+end
 
+function Screen:touching()
     touchController:addTap(app.screen, function(event)
-        levelBuilder:addItem(event)
+        levelBuilder:dropItem(event)
     end)
 
     touchController:addDrag(app.screen, app.screen.level)
+end
 
-    --------------------------------------
-
+function Screen:center()
     Tools.drawCenter()
     Tools.centerLevel()
-
 end
 
 --------------------------------------------------------------------------------
