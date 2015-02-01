@@ -37,19 +37,6 @@ function Screen:prepare()
     levelBuilder:reset()
 end
 
-function Screen:touching()
-    touchController:addTap(app.screen, function(event)
-        levelBuilder:dropItem(event)
-    end)
-
-    touchController:addDrag(app.screen, app.screen.level)
-end
-
-function Screen:center()
-    Tools.drawCenter()
-    Tools.centerLevel()
-end
-
 --------------------------------------------------------------------------------
 
 return Screen

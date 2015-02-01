@@ -12,15 +12,15 @@ function TouchController:stopPropagation (listener, content)
     end)
 end
 
-function TouchController:addDrag (listener, content)
+function TouchController:addDrag (o)
     local onEvent = function(event)
-        drag(content, event)
+        drag(o, event)
     end
 
-    listener:addEventListener( 'touch', onEvent )
+    o:addEventListener( 'touch', onEvent )
 
-    listener.removeDrag = function()
-        listener:removeEventListener( 'touch', onEvent )
+    o.removeDrag = function()
+        o:removeEventListener( 'touch', onEvent )
     end
 end
 

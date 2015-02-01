@@ -19,7 +19,11 @@ end
 --------------------------------------------------------------------------------
 
 function LevelBuilder:reset()
-    Screen.reset()
+
+    if(app.screen.level) then
+        app.screen.level.removeDrag()
+        display.remove(app.screen.level)
+    end
 
     if(app.screen.grid) then
         Tools.hideSnapGrid()
@@ -28,8 +32,25 @@ function LevelBuilder:reset()
     app.screen.level = display.newGroup()
     app.screen:insert(app.screen.level)
 
-    Screen.touching()
-    Screen.center()
+    app.screen.level.base = display.newRect(
+        app.screen.level,
+        -4000, -4000,
+        8000,
+        8000
+    )
+
+    app.screen.level.base.anchorX = 0
+    app.screen.level.base.anchorY = 0
+    app.screen.level.base:setFillColor( 0.12 )
+
+    touchController:addTap(app.screen.level, function(event)
+        levelBuilder:dropItem(event)
+    end)
+
+    touchController:addDrag(app.screen.level)
+
+    Tools.drawCenter()
+    Tools.centerLevel()
 end
 
 --------------------------------------------------------------------------------
@@ -109,6 +130,10 @@ end
 
 function LevelBuilder:export()
 
+
+    print('------ Exporting ')
+    utils.tprint(self.items)
+
     native.setActivityIndicator( true )
 
     ------------------------------------
@@ -166,13 +191,20 @@ function LevelBuilder:addGridItem(item, gridX, gridY)
     item.x = (gridX + 0.5) * Room.WIDTH
     item.y = (gridY + 0.5) * Room.HEIGHT
 
+    print('---')
+    utils.tprint(item.data)
     _.extend(item.data, {
         x = gridX,
         y = gridY
     })
+    print('---')
+    utils.tprint(item.data)
+    print('---')
 
     if(not self.items[gridX]) then self.items[gridX] = {} end
     self.items[gridX][gridY] = item.data
+
+    utils.tprint(self.items)
 end
 
 --------------------------------------------------------------------------------
