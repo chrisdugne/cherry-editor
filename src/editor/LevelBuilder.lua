@@ -60,7 +60,7 @@ function LevelBuilder:dropItem(event)
     if(app.selectedItem) then
         local item = display.newImage(
             app.screen.level,
-            app.selectedItem.imagePath
+            app.selectedItem.imagePath --> faux !
         )
 
         item.data = _.clone(app.selectedItem.data)
@@ -71,6 +71,8 @@ function LevelBuilder:dropItem(event)
             local gridX = math.floor(realX/Room.WIDTH)
             local gridY = math.floor(realY/Room.HEIGHT)
             self:addGridItem(item, gridX, gridY)
+            self:addDragToGridItem(item)
+
         else
             self:addFloatingItem(item, event)
         end
@@ -78,6 +80,15 @@ function LevelBuilder:dropItem(event)
 end
 
 --------------------------------------------------------------------------------
+
+function LevelBuilder:addDragToGridItem(item)
+    -- note :  must find another solution for floating items
+    touchController:addDrag(item, function(event)
+        display.remove(item)
+        self.items[item.data.x][item.data.y] = nil
+        self:dropItem(event)
+    end)
+end
 
 --- load a json item
 function LevelBuilder:loadJSONItem(jsonItem)
@@ -98,6 +109,8 @@ function LevelBuilder:loadJSONItem(jsonItem)
 
     if(app.screen.grid) then
         self:addGridItem(item, jsonItem.x, jsonItem.y)
+        self:addDragToGridItem(item)
+
     else
         self:addFloatingItem(item, jsonItem.x, jsonItem.y)
     end

@@ -9,11 +9,11 @@ local Tools = {}
 function Tools:drawCenter ()
 
     local center1 = display.newLine(
-        app.screen.level, 0, -Room.HEIGHT/4, 0, Room.HEIGHT/4
+        app.screen.level, Room.WIDTH/2, Room.HEIGHT/4, Room.WIDTH/2, Room.HEIGHT*0.75
     )
 
     local center2 = display.newLine(
-        app.screen.level, -Room.WIDTH/4, 0, Room.WIDTH/4, 0
+        app.screen.level, Room.WIDTH/4, Room.HEIGHT/2, Room.WIDTH*0.75, Room.HEIGHT/2
     )
 
     center1.strokeWidth = 2

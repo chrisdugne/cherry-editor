@@ -6,21 +6,22 @@ local TouchController = {}
 -- API
 --------------------------------------------------------------------------------
 
-function TouchController:stopPropagation (listener, content)
-    listener:addEventListener( 'touch', function(event)
+function TouchController:stopPropagation (object)
+    object:addEventListener( 'touch', function(event)
         return true
     end)
 end
 
-function TouchController:addDrag (o)
+function TouchController:addDrag(object, onDrop)
     local onEvent = function(event)
-        drag(o, event)
+        drag(object, event, onDrop)
+        return true
     end
 
-    o:addEventListener( 'touch', onEvent )
+    object:addEventListener( 'touch', onEvent )
 
-    o.removeDrag = function()
-        o:removeEventListener( 'touch', onEvent )
+    object.removeDrag = function()
+        object:removeEventListener( 'touch', onEvent )
     end
 end
 
@@ -32,7 +33,7 @@ end
 
 --------------------------------------------------------------------------------
 
-function drag (o, event)
+function drag (o, event, onDrop)
     if event.phase == 'began' then
         display.getCurrentStage():setFocus( o )
         o.markX = o.x
@@ -46,9 +47,11 @@ function drag (o, event)
     elseif event.phase == 'ended' or event.phase == 'cancelled' then
         display.getCurrentStage():setFocus( nil )
         o.moving = false
+        if(onDrop) then
+            onDrop(event)
+        end
 
     end
-
 end
 
 --------------------------------------------------------------------------------
