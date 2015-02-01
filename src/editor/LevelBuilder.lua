@@ -63,7 +63,7 @@ function LevelBuilder:dropItem(event)
             app.selectedItem.imagePath
         )
 
-        item.data = app.selectedItem.data
+        item.data = _.clone(app.selectedItem.data)
 
         if(app.screen.grid) then
             local realX = event.x - app.screen.level.x - app.screen.x

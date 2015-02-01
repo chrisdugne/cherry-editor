@@ -16,6 +16,10 @@ function Underscore.extend (destination, source)
     return destination
 end
 
+function Underscore.clone (object)
+    return _.extend({}, object)
+end
+
 -------------------------------------
 
 return Underscore

@@ -6,13 +6,6 @@ local Screen = {}
 
 --------------------------------------------------------------------------------
 
-function Screen:reset()
-    if(app.screen.level) then
-        app.screen.removeDrag()
-        display.remove(app.screen.level)
-    end
-end
-
 function Screen:prepare()
 
     app.screen   = display.newGroup()
