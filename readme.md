@@ -1,11 +1,12 @@
 ![screenshot](/readme.screenshot.png)
 
 ## About
-- Use your Corona Simulator to design the levels for your game.
-- Import/Export json content from/to your [corona-starter](https://github.com/chrisdugne/corona-starter) game.
+This is a base for your own tiled level editor :
+- 1 - Code your own content
+- 2 - Use your Corona Simulator to design the levels for your game.
+- 3 - Import/Export json content from/to your [corona-starter](https://github.com/chrisdugne/corona-starter) game.
 
 ## Features
-- base for your own tiled level editor
 - import/export json
 - list many groups of tiles/items on the left menu
 - grid snapping or floating tiles
