@@ -192,8 +192,8 @@ function LevelBuilder:addToLevel(item, gridX, gridY)
         gridY or item.data.y
     )
 
-    utils.onTouch(item, function()
-        self:tapOnItem(item)
+    utils.onTouch(item, function(item, event)
+        self:tapOnItem(item, event)
     end)
 
     self:addDragToGridItem(item)
@@ -237,15 +237,23 @@ function LevelBuilder.tapOnLevel(event)
 end
 
 -- tap on level
-function LevelBuilder:tapOnItem(item)
+function LevelBuilder:tapOnItem(item, event)
     print('tapOnItem')
     if(app.selectedItem) then
-        if(item.name == 'room') then
-            if(app.selectedItem.name == 'room') then
+        print('app.selectedItem')
+        if(app.selectedItem.name == 'room') then
+            if(item.name == 'room') then
                 Tools.selectItem(item)
+            end
+        else
+            print('------')
+            utils.tprint(event)
+            if(item.name == 'wall') then
+
             end
         end
     else
+        print('nothing')
         Tools.selectItem(item)
     end
 end

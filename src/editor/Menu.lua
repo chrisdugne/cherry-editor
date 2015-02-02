@@ -133,7 +133,9 @@ function list(name)
                 type = params[2]
             }
 
-            utils.onTouch(item, Tools.selectItem)
+            utils.onTouch(item, function(event)
+                Tools.selectItem(item)
+            end)
         end
     end
 end
