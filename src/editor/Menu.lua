@@ -35,25 +35,6 @@ end
 
 --------------------------------------------------------------------------------
 
-function selectItem(item)
-
-    local sameItem = app.selectedItem == item
-
-    if(app.selectedItem) then
-        app.selectedItem.strokeWidth = 0
-        app.selectedItem = nil
-    end
-
-    if(not sameItem) then
-        app.selectedItem = item
-        item.strokeWidth = 4
-        item:setStrokeColor( 25/255, 125/255, 25/255 )
-    end
-
-end
-
---------------------------------------------------------------------------------
-
 function list(name)
     local lfs = require "lfs"
 
@@ -62,21 +43,19 @@ function list(name)
 
     for file in lfs.dir(folder) do
         if(utils.string.startsWith(file, name)) then
-            local params    = utils.split(file, '.')
-            local imagePath = 'assets/images/game/' .. name .. '/' .. file
-            local item      = display.newImage(
+            local params = utils.split(file, '.')
+            local item   = display.newImage(
                 app.menu,
-                imagePath,
+                'assets/images/game/' .. name .. '/' .. file,
                 120, 50 + app.menu.numChildren * 120
             )
 
-            item.imagePath = imagePath
             item.data = {
                 item = params[1],
                 type = params[2]
             }
 
-            utils.onTouch(item, selectItem)
+            utils.onTouch(item, Tools.selectItem)
 
             app.menu:insert(item)
         end

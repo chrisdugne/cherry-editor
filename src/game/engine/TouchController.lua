@@ -40,6 +40,9 @@ function drag (o, event, onDrop)
         o.markY = o.y
 
     elseif event.phase == 'moved' then
+        if(not o.markX) then o.markX = o.x end
+        if(not o.markY) then o.markY = o.y end
+
         o.x = (event.x - event.xStart) + o.markX
         o.y = (event.y - event.yStart) + o.markY
         o.moving = true
