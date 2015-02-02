@@ -43,14 +43,7 @@ function LevelBuilder:reset()
     app.screen.level.base.anchorY = 0
     app.screen.level.base:setFillColor( 0.12 )
 
-    touchController:addTap(app.screen.level, function(event)
-        if(app.screen.grid) then
-            levelBuilder:dropItemOnGrid(event)
-        else
-            levelBuilder:dropItemOnScene(event)
-        end
-
-    end)
+    touchController:addTap(app.screen.level, LevelBuilder.tapOnLevel)
 
     touchController:addDrag(app.screen.level)
 
@@ -61,39 +54,36 @@ end
 --------------------------------------------------------------------------------
 
 function LevelBuilder:dropItemOnGrid(event)
-    if(app.selectedItem) then
-        local realX      = event.x - app.screen.level.x - app.screen.x
-        local realY      = event.y - app.screen.level.y - app.screen.y
-        local gridX      = math.floor(realX/Room.WIDTH)
-        local gridY      = math.floor(realY/Room.HEIGHT)
+    print('dropItemOnGrid')
+    local realX      = event.x - app.screen.level.x - app.screen.x
+    local realY      = event.y - app.screen.level.y - app.screen.y
+    local gridX      = math.floor(realX/Room.WIDTH)
+    local gridY      = math.floor(realY/Room.HEIGHT)
 
-        local item = display.newImage(
-            app.screen.level,
-            Tools.imagePath(app.selectedItem.data)
-        )
+    local item = display.newImage(
+        app.screen.level,
+        Tools.imagePath(app.selectedItem.data)
+    )
 
-        item.data = _.clone(app.selectedItem.data)
+    item.name = app.selectedItem.name
+    item.data = _.clone(app.selectedItem.data)
 
-        self:addToLevel(item, gridX, gridY)
+    self:addToLevel(item, gridX, gridY)
 
-        Tools.selectItem(item)
-    end
+    Tools.selectItem(item)
 end
 
 --------------------------------------------------------------------------------
 
 -- Floating item drop anywhere on scene
 function LevelBuilder:dropItemOnScene(event)
-    if(app.selectedItem) then
+    local item = display.newImage(
+        app.screen.level,
+        Tools.imagePath(app.selectedItem.data)
+    )
 
-        local item = display.newImage(
-            app.screen.level,
-            Tools.imagePath(app.selectedItem.data)
-        )
-
-        item.data = _.clone(app.selectedItem.data)
-        self:addFloatingItem(item, event)
-    end
+    item.data = _.clone(app.selectedItem.data)
+    self:addFloatingItem(item, event)
 end
 
 --------------------------------------------------------------------------------
@@ -107,25 +97,13 @@ function LevelBuilder:loadJSONItem(jsonItem)
     )
 
     item.data = jsonItem
+    item.name = jsonItem.item
 
     if(app.screen.grid) then
         self:addToLevel(item)
     else
         self:addFloatingItem(item, jsonItem.x, jsonItem.y)
     end
-end
-
---------------------------------------------------------------------------------
-
-function LevelBuilder:addToLevel(item, gridX, gridY)
-    self:addGridItem(
-        item,
-        gridX or item.data.x,
-        gridY or item.data.y
-    )
-
-    self:addDragToGridItem(item)
-    utils.onTouch(item, Tools.selectItem)
 end
 
 --------------------------------------------------------------------------------
@@ -207,15 +185,69 @@ end
 -- private use
 --------------------------------------------------------------------------------
 
+function LevelBuilder:addToLevel(item, gridX, gridY)
+    self:addGridItem(
+        item,
+        gridX or item.data.x,
+        gridY or item.data.y
+    )
+
+    utils.onTouch(item, function()
+        self:tapOnItem(item)
+    end)
+
+    self:addDragToGridItem(item)
+end
+
+--------------------------------------------------------------------------------
+
 -- note : just selecting an item on the grid = remove + add it back + selection
 function LevelBuilder:addDragToGridItem(item)
     local onDrop = function(event)
+        print('-> onDrop')
         display.remove(item)
         self.items[item.data.x][item.data.y] = nil
-        self:dropItemOnGrid(event)
+        self.tapOnLevel(event)
     end
 
-    touchController:addDrag(item, onDrop)
+    local onStart = function(event)
+        Tools.selectItem(item)
+    end
+
+    touchController:addDrag(item, {
+        onStart = onStart,
+        onDrop  = onDrop
+    })
+end
+
+--------------------------------------------------------------------------------
+
+-- tap on level
+function LevelBuilder.tapOnLevel(event)
+    print('tapOnLevel')
+    if(app.selectedItem) then
+        if(app.selectedItem.name == 'room') then
+            if(app.screen.grid) then
+                levelBuilder:dropItemOnGrid(event)
+            else
+                levelBuilder:dropItemOnScene(event)
+            end
+        end
+    end
+end
+
+-- tap on level
+function LevelBuilder:tapOnItem(item)
+    print('tapOnItem')
+    if(app.selectedItem) then
+        if(item.name == 'room') then
+            if(app.selectedItem.name == 'room') then
+                Tools.selectItem(item)
+            end
+        end
+    else
+        Tools.selectItem(item)
+    end
 end
 
 --------------------------------------------------------------------------------

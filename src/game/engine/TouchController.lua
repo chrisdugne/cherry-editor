@@ -12,9 +12,10 @@ function TouchController:stopPropagation (object)
     end)
 end
 
-function TouchController:addDrag(object, onDrop)
+function TouchController:addDrag(object, options)
+    options = options or {}
     local onEvent = function(event)
-        drag(object, event, onDrop)
+        drag(object, event, options)
         return true
     end
 
@@ -33,11 +34,16 @@ end
 
 --------------------------------------------------------------------------------
 
-function drag (o, event, onDrop)
+function drag (o, event, options)
     if event.phase == 'began' then
         display.getCurrentStage():setFocus( o )
-        o.markX = o.x
-        o.markY = o.y
+        o.markX  = o.x
+        o.markY  = o.y
+        o.startX = o.x
+        o.startY = o.y
+        if(options.onStart) then
+            options.onStart()
+        end
 
     elseif event.phase == 'moved' then
         if(not o.markX) then o.markX = o.x end
@@ -50,8 +56,13 @@ function drag (o, event, onDrop)
     elseif event.phase == 'ended' or event.phase == 'cancelled' then
         display.getCurrentStage():setFocus( nil )
         o.moving = false
-        if(onDrop) then
-            onDrop(event)
+        o.endX   = o.x
+        o.endY   = o.y
+
+        local hasMoved = (o.endX ~= o.startX) or (o.endY ~= o.startY)
+
+        if(hasMoved and options.onDrop) then
+            options.onDrop(event)
         end
 
     end

@@ -105,7 +105,6 @@ end
 --------------------------------------------------------------------------------
 
 function list(name)
-    print('listing ' .. name)
     if(app.menu.list) then
         display.remove(app.menu.list)
     end
@@ -113,7 +112,6 @@ function list(name)
     app.menu.list = display.newGroup()
     app.menu:insert(app.menu.list)
     app.menu.list.y = TOOLBAR_HEIGHT + 50
-
 
     local lfs = require "lfs"
 
@@ -129,8 +127,9 @@ function list(name)
                 120, 50 + app.menu.list.numChildren * 120
             )
 
+            item.name = name
             item.data = {
-                item = params[1],
+                item = name,
                 type = params[2]
             }
 

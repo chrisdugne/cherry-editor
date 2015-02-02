@@ -43,13 +43,13 @@ end
 --------------------------------------------------------------------------------
 
 function Tools.selectItem (item)
-
     if(app.selectedItem) then
         app.selectedItem.strokeWidth = 0
         app.selectedItem = nil
     end
 
     app.selectedItem = item
+
     item.strokeWidth = 4
     item:setStrokeColor( 25/255, 125/255, 25/255 )
 end
