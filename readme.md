@@ -19,7 +19,7 @@ used as the [import button](http://thenounproject.com/term/shrink/25665/) : crea
 
 <a href="http://thenounproject.com/term/shrink/44977/"><img align="left" height="32" width="32" hspace="10" src="https://d30y9cdsu7xlg0.cloudfront.net/png/44977-200.png"></a>
 
-used as the [left/right button](http://thenounproject.com/term/shrink/44977/) : created by Arthur Shlain
+used as the [left/right buttons](http://thenounproject.com/term/shrink/44977/) : created by Arthur Shlain
 
 <a href="http://thenounproject.com/term/shrink/33953/"><img align="left" height="32" width="32" hspace="10" src="https://d30y9cdsu7xlg0.cloudfront.net/png/33953-200.png"></a>
 

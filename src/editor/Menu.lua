@@ -3,6 +3,8 @@
 --------------------------------------------------------------------------------
 
 local Menu = {}
+local items = {'room', 'door', 'wall'}
+local currentList = 0
 
 --------------------------------------------------------------------------------
 
@@ -30,12 +32,89 @@ function Menu:prepare ()
 
     ----------------------------------------------------------------------------
 
-    list('room')
+    buildArrows()
+
+    ----------------------------------------------------------------------------
+
+    nextList()
+end
+
+--------------------------------------------------------------------------------
+
+function buildArrows(name)
+    app.menu.arrows = display.newGroup()
+    app.menu.arrows.x = 0
+    app.menu.arrows.y = display.contentHeight
+    app.menu.arrows.width = ITEMS_WIDTH
+    app.menu.arrows.height = TOOLBAR_HEIGHT
+
+    app.menu.arrows.anchorX = 0
+    app.menu.arrows.anchorY = 1
+
+    app.menu.arrows.bounds = display.newRect(
+        app.menu.arrows,
+        0, 0,
+        ITEMS_WIDTH,
+        TOOLBAR_HEIGHT
+    )
+
+    app.menu.arrows.bounds.anchorX = 0
+    app.menu.arrows.bounds.anchorY = 1
+    app.menu.arrows.bounds.strokeWidth = 1
+    app.menu.arrows.bounds:setFillColor( 0.12 )
+    app.menu.arrows.bounds:setStrokeColor( 225/255, 225/255, 225/255 )
+
+
+    local left = display.newImage(
+        app.menu.arrows,
+        'assets/images/editor/noun_44977_cc.png',
+        80, -app.menu.arrows.height/2
+    )
+
+    local right = display.newImage(
+        app.menu.arrows,
+        'assets/images/editor/noun_44977_cc.png',
+        160, -app.menu.arrows.height/2
+    )
+
+    right.rotation = 180
+
+    utils.onTouch(left, function()
+        previousList()
+    end)
+
+    utils.onTouch(right, function()
+        nextList()
+    end)
+end
+
+--------------------------------------------------------------------------------
+
+function previousList()
+    currentList = currentList - 1
+    if(currentList == 0) then currentList = #items end
+    list(items[currentList])
+end
+
+function nextList()
+    currentList = currentList + 1
+    if(currentList == (#items + 1)) then currentList = 1 end
+    list(items[currentList])
 end
 
 --------------------------------------------------------------------------------
 
 function list(name)
+    print('listing ' .. name)
+    if(app.menu.list) then
+        display.remove(app.menu.list)
+    end
+
+    app.menu.list = display.newGroup()
+    app.menu:insert(app.menu.list)
+    app.menu.list.y = TOOLBAR_HEIGHT + 50
+
+
     local lfs = require "lfs"
 
     local baseDir = system.pathForFile('main.lua'):gsub("main.lua", "")
@@ -45,9 +124,9 @@ function list(name)
         if(utils.string.startsWith(file, name)) then
             local params = utils.split(file, '.')
             local item   = display.newImage(
-                app.menu,
+                app.menu.list,
                 'assets/images/game/' .. name .. '/' .. file,
-                120, 50 + app.menu.numChildren * 120
+                120, 50 + app.menu.list.numChildren * 120
             )
 
             item.data = {
@@ -56,8 +135,6 @@ function list(name)
             }
 
             utils.onTouch(item, Tools.selectItem)
-
-            app.menu:insert(item)
         end
     end
 end
