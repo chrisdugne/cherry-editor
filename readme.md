@@ -12,11 +12,6 @@ This is a base for your own tiled level editor :
 - grid snapping or floating tiles
 - dragndrop tiles on the level
 
-## Libs
-Use the awesome particle effects provided by [CBEffects](https://github.com/GymbylCoding/CBEffects).
-
-Grab some functions from [Underscore.Lua](https://github.com/mirven/underscore.lua)
-
 ## Credits
 
 <a href="http://thenounproject.com/term/shrink/20381/"><img align="left" height="32" width="32" hspace="10" src="https://d30y9cdsu7xlg0.cloudfront.net/png/20381-200.png"></a>

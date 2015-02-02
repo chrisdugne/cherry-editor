@@ -9,7 +9,6 @@ storyboard          = require 'storyboard'
 
 ---- Additional libs
 
-CBE                 = require 'CBEffects.Library'
 _                   = require 'src.libs.Underscore'
 utils               = require 'src.libs.Utils'
 
