@@ -1,7 +1,15 @@
 ![screenshot](/readme.screenshot.png)
 
 ## About
-This is the level editor to plug with a [corona-starter](https://github.com/chrisdugne/corona-starter) game.
+- Use your Corona Simulator to design the levels for your game.
+- Import/Export json content from/to your [corona-starter](https://github.com/chrisdugne/corona-starter) game.
+
+## Features
+- base for your own tiled level editor
+- import/export json
+- list many groups of tiles/items on the left menu
+- grid snapping or floating tiles
+- dragndrop tiles on the level
 
 ## Libs
 Use the awesome particle effects provided by [CBEffects](https://github.com/GymbylCoding/CBEffects).
