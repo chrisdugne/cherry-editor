@@ -192,7 +192,7 @@ function LevelBuilder:addToLevel(item, gridX, gridY)
         gridY or item.data.y
     )
 
-    utils.onTouch(item, function(item, event)
+    utils.onTouch(item, function(event)
         self:tapOnItem(item, event)
     end)
 
@@ -210,13 +210,13 @@ function LevelBuilder:addDragToGridItem(item)
         self.tapOnLevel(event)
     end
 
-    local onStart = function(event)
+    local onDragStart = function(event)
         Tools.selectItem(item)
     end
 
     touchController:addDrag(item, {
-        onStart = onStart,
-        onDrop  = onDrop
+        onDragStart = onDragStart,
+        onDrop      = onDrop
     })
 end
 
@@ -240,14 +240,22 @@ end
 function LevelBuilder:tapOnItem(item, event)
     print('tapOnItem')
     if(app.selectedItem) then
-        print('app.selectedItem')
         if(app.selectedItem.name == 'room') then
             if(item.name == 'room') then
                 Tools.selectItem(item)
             end
         else
-            print('------')
-            utils.tprint(event)
+            local touchOnScreenX = event.x - app.screen.x
+            local touchOnScreenY = event.y - app.screen.y
+
+            local tileLeft = item.x - Room.WIDTH/2 + app.screen.level.x
+            local tileTop  = item.y - Room.HEIGHT/2 + app.screen.level.y
+
+            local touchOnTileX = touchOnScreenX - tileLeft
+            local touchOnTileY = touchOnScreenY - tileTop
+
+            print(touchOnTileX, touchOnTileY)
+
             if(item.name == 'wall') then
 
             end

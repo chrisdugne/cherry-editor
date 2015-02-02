@@ -14,6 +14,7 @@ end
 
 function TouchController:addDrag(object, options)
     options = options or {}
+
     local onEvent = function(event)
         drag(object, event, options)
         return true
@@ -41,9 +42,6 @@ function drag (o, event, options)
         o.markY  = o.y
         o.startX = o.x
         o.startY = o.y
-        if(options.onStart) then
-            options.onStart()
-        end
 
     elseif event.phase == 'moved' then
         if(not o.markX) then o.markX = o.x end
@@ -51,6 +49,11 @@ function drag (o, event, options)
 
         o.x = (event.x - event.xStart) + o.markX
         o.y = (event.y - event.yStart) + o.markY
+
+        if(not o.moving and options.onDragStart) then
+            options.onDragStart()
+        end
+
         o.moving = true
 
     elseif event.phase == 'ended' or event.phase == 'cancelled' then
