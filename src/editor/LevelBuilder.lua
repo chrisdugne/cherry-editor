@@ -4,6 +4,12 @@
 
 local LevelBuilder = {}
 
+local CENTER = 'center'
+local LEFT   = 'left'
+local RIGHT  = 'right'
+local TOP    = 'top'
+local BOTTOM = 'bottom'
+
 --------------------------------------------------------------------------------
 
 function LevelBuilder:new()
@@ -245,25 +251,57 @@ function LevelBuilder:tapOnItem(item, event)
                 Tools.selectItem(item)
             end
         else
-            local touchOnScreenX = event.x - app.screen.x
-            local touchOnScreenY = event.y - app.screen.y
-
-            local tileLeft = item.x - Room.WIDTH/2 + app.screen.level.x
-            local tileTop  = item.y - Room.HEIGHT/2 + app.screen.level.y
-
-            local touchOnTileX = touchOnScreenX - tileLeft
-            local touchOnTileY = touchOnScreenY - tileTop
-
-            print(touchOnTileX, touchOnTileY)
+            local direction = self:findDirectionOnRoom(item, event)
+            print(direction)
 
             if(item.name == 'wall') then
 
             end
-        end
+         end
     else
         print('nothing')
         Tools.selectItem(item)
     end
+end
+
+--------------------------------------------------------------------------------
+
+function LevelBuilder:findDirectionOnRoom(item, event)
+    local touchOnScreenX = event.x - app.screen.x
+    local touchOnScreenY = event.y - app.screen.y
+
+    local tileLeft = item.x - Room.WIDTH/2 + app.screen.level.x
+    local tileTop  = item.y - Room.HEIGHT/2 + app.screen.level.y
+
+    local touchOnTileX = touchOnScreenX - tileLeft
+    local touchOnTileY = touchOnScreenY - tileTop
+
+    local margin = 15
+    if(touchOnTileX > margin
+    and touchOnTileX < Room.WIDTH - margin
+    and touchOnTileY < margin) then
+        return TOP
+    end
+
+    if(touchOnTileX > margin
+    and touchOnTileX < Room.WIDTH - margin
+    and touchOnTileY > Room.HEIGHT - margin) then
+        return BOTTOM
+    end
+
+    if(touchOnTileX < margin
+    and touchOnTileY > margin
+    and touchOnTileY < Room.HEIGHT - margin) then
+        return LEFT
+    end
+
+    if(touchOnTileX > Room.WIDTH - margin
+    and touchOnTileY > margin
+    and touchOnTileY < Room.HEIGHT - margin) then
+        return RIGHT
+    end
+
+    return CENTER
 end
 
 --------------------------------------------------------------------------------
