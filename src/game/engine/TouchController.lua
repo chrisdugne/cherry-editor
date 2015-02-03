@@ -17,6 +17,9 @@ function TouchController:addDrag(object, options)
 
     local onEvent = function(event)
         drag(object, event, options)
+        for k, child in object.children do
+            drag(object, event)
+        end
         return true
     end
 

@@ -4,11 +4,7 @@
 
 local LevelBuilder = {}
 
-local CENTER = 'center'
-local LEFT   = 'left'
-local RIGHT  = 'right'
-local TOP    = 'top'
-local BOTTOM = 'bottom'
+local CENTER = 'room.center'
 
 --------------------------------------------------------------------------------
 
@@ -252,10 +248,18 @@ function LevelBuilder:tapOnItem(item, event)
             end
         else
             local direction = self:findDirectionOnRoom(item, event)
-            print(direction)
 
             if(item.name == 'wall') then
+                -- (90 * (self.direction - 1))
+                local wall = display.newImage(
+                    app.screen.level,
+                    Tools.imagePath(app.selectedItem.data)
+                )
+                wall.x = item.x
+                wall.y = item.y
 
+                if(not item.children) then item.children = {} end
+                item.children[#item.children + 1] = wall
             end
          end
     else
@@ -280,25 +284,25 @@ function LevelBuilder:findDirectionOnRoom(item, event)
     if(touchOnTileX > margin
     and touchOnTileX < Room.WIDTH - margin
     and touchOnTileY < margin) then
-        return TOP
+        return Room.TOP
     end
 
     if(touchOnTileX > margin
     and touchOnTileX < Room.WIDTH - margin
     and touchOnTileY > Room.HEIGHT - margin) then
-        return BOTTOM
+        return Room.BOTTOM
     end
 
     if(touchOnTileX < margin
     and touchOnTileY > margin
     and touchOnTileY < Room.HEIGHT - margin) then
-        return LEFT
+        return Room.LEFT
     end
 
     if(touchOnTileX > Room.WIDTH - margin
     and touchOnTileY > margin
     and touchOnTileY < Room.HEIGHT - margin) then
-        return RIGHT
+        return Room.RIGHT
     end
 
     return CENTER
