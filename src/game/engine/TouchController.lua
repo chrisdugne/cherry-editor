@@ -17,8 +17,12 @@ function TouchController:addDrag(object, options)
 
     local onEvent = function(event)
         drag(object, event, options)
-        for k, child in object.children do
-            drag(object, event)
+        if(object.children) then
+            for k,child in pairs(object.children) do
+                drag(child, event, {
+                    child = true
+                })
+            end
         end
         return true
     end
@@ -40,7 +44,9 @@ end
 
 function drag (o, event, options)
     if event.phase == 'began' then
-        display.getCurrentStage():setFocus( o )
+        if(not options.child) then
+            display.getCurrentStage():setFocus( o )
+        end
         o.markX  = o.x
         o.markY  = o.y
         o.startX = o.x

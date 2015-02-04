@@ -127,9 +127,8 @@ function list(name)
                 120, 50 + app.menu.list.numChildren * 120
             )
 
-            item.name = name
-            item.data = {
-                item = name,
+            item.json = {
+                name = name,
                 type = params[2]
             }
 

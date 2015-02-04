@@ -57,22 +57,19 @@ end
 
 function LevelBuilder:dropItemOnGrid(event)
     print('dropItemOnGrid')
-    local realX      = event.x - app.screen.level.x - app.screen.x
-    local realY      = event.y - app.screen.level.y - app.screen.y
-    local gridX      = math.floor(realX/Room.WIDTH)
-    local gridY      = math.floor(realY/Room.HEIGHT)
+    local realX = event.x - app.screen.level.x - app.screen.x
+    local realY = event.y - app.screen.level.y - app.screen.y
+    local gridX = math.floor(realX/Room.WIDTH)
+    local gridY = math.floor(realY/Room.HEIGHT)
 
-    local item = display.newImage(
-        app.screen.level,
-        Tools.imagePath(app.selectedItem.data)
-    )
+    local jsonItem = {
+        imagePath = Tools.imagePath(app.selectedItem.data),
+        gridX     = gridX,
+        gridY     = gridY
+    }
 
-    item.name = app.selectedItem.name
-    item.data = _.clone(app.selectedItem.data)
+    self:addToLevel(jsonItem)
 
-    self:addToLevel(item, gridX, gridY)
-
-    Tools.selectItem(item)
 end
 
 --------------------------------------------------------------------------------
@@ -187,11 +184,28 @@ end
 -- private use
 --------------------------------------------------------------------------------
 
-function LevelBuilder:addToLevel(item, gridX, gridY)
+--  jsonItem = {
+--      gridX,
+--      gridY,
+--      imagePath
+--  }
+
+--
+-- Tools.imagePath(app.selectedItem.data)
+
+function LevelBuilder:addToLevel(jsonItem)
+
+    local item = display.newImage(
+        app.screen.level,
+        jsonItem.imagePath
+    )
+
+    item.json = _.clone(jsonItem)
+
     self:addGridItem(
         item,
-        gridX or item.data.x,
-        gridY or item.data.y
+        jsonItem.gridX,
+        jsonItem.gridY
     )
 
     utils.onTouch(item, function(event)
@@ -199,6 +213,8 @@ function LevelBuilder:addToLevel(item, gridX, gridY)
     end)
 
     self:addDragToGridItem(item)
+
+    Tools.selectItem(item)
 end
 
 --------------------------------------------------------------------------------
@@ -228,7 +244,7 @@ end
 function LevelBuilder.tapOnLevel(event)
     print('tapOnLevel')
     if(app.selectedItem) then
-        if(app.selectedItem.name == 'room') then
+        if(app.selectedItem.json.name == 'room') then
             if(app.screen.grid) then
                 levelBuilder:dropItemOnGrid(event)
             else
@@ -242,19 +258,20 @@ end
 function LevelBuilder:tapOnItem(item, event)
     print('tapOnItem')
     if(app.selectedItem) then
-        if(app.selectedItem.name == 'room') then
-            if(item.name == 'room') then
+        if(app.selectedItem.json.name == 'room') then
+            if(item.json.name == 'room') then
                 Tools.selectItem(item)
             end
         else
             local direction = self:findDirectionOnRoom(item, event)
 
-            if(item.name == 'wall') then
-                -- (90 * (self.direction - 1))
+            if(direction ~= CENTER and app.selectedItem.json.name == 'wall') then
                 local wall = display.newImage(
                     app.screen.level,
                     Tools.imagePath(app.selectedItem.data)
                 )
+
+                wall.rotation = (90 * (direction - 1))
                 wall.x = item.x
                 wall.y = item.y
 
