@@ -34,7 +34,7 @@ end
 
 function Tools.imagePath (itemData)
     local type = itemData.type
-    local name = itemData.item
+    local name = itemData.name
     return 'assets/images/game/' ..
              name .. '/' ..
              name .. '.' .. type .. '.png'

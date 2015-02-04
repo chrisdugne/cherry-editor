@@ -186,23 +186,32 @@ end
 
 --------------------------------------------------------------------------------
 
---a tester  https://gist.github.com/874792
+-- use :
+-- utils.tprint(object)
+-- utils.tprint(object, nil, options)
+function tprint (tbl, indent, options)
 
-function tprint (tbl, indent)
     if not tbl then print("Table nil") return end
+    if not options then options = {} end
+    if options.showUnderscores then print('--> showing _* properties') end
+
     if type(tbl) ~= "table" then
         print(tostring(tbl))
     else
         if not indent then indent = 0 end
         for k, v in pairs(tbl) do
-            formatting = string.rep("  ", indent) .. k .. ": "
-            if type(v) == "table" then
-                print(formatting)
-                if(indent < 6) then
-                    tprint(v, indent+1)
+            local show = not string.startsWith(k, '_')
+                         or  options.showUnderscores == true
+            if(show) then
+                formatting = string.rep("  ", indent) .. k .. ": "
+                if type(v) == "table" then
+                    print(formatting)
+                    if(indent < 6) then
+                        tprint(v, indent+1, options)
+                    end
+                else
+                    print(formatting .. tostring(v))
                 end
-            else
-                print(formatting .. tostring(v))
             end
         end
     end
