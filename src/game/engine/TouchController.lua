@@ -71,9 +71,10 @@ function drag (o, event, options)
         o.endX   = o.x
         o.endY   = o.y
 
+        local sameObjectFromStartToEnd = o.startX ~= nil
         local hasMoved = (o.endX ~= o.startX) or (o.endY ~= o.startY)
 
-        if(hasMoved and options.onDrop) then
+        if(sameObjectFromStartToEnd and hasMoved and options.onDrop) then
             options.onDrop(event)
         end
 

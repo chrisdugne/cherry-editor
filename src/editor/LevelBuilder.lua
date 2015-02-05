@@ -228,7 +228,6 @@ end
 --------------------------------------------------------------------------------
 
 function LevelBuilder:addChildren(jsonItems, parentItem)
-    print('      addChildren')
     if(not jsonItems) then return end
 
     for k, child in pairs(jsonItems) do
@@ -245,8 +244,6 @@ function LevelBuilder:addChildren(jsonItems, parentItem)
             item.rotation = (90 * (child.direction - 1))
         end
 
-        -- touchController:stopPropagation(item)
-
         if(not parentItem.children) then parentItem.children = {} end
         parentItem.children[#parentItem.children + 1] = item
 
@@ -257,7 +254,6 @@ end
 --------------------------------------------------------------------------------
 
 function LevelBuilder:deleteFromLevel(item)
-    print('   deleteFromLevel')
     display.remove(item)
     self:deleteChildren(item.children)
 
@@ -269,7 +265,6 @@ function LevelBuilder:deleteFromLevel(item)
 end
 
 function LevelBuilder:deleteChildren(items)
-    print('     deleteChildren')
     if(not items) then return end
 
     for k, item in pairs(items) do
@@ -281,8 +276,6 @@ end
 --------------------------------------------------------------------------------
 
 function LevelBuilder:redraw(item)
-    print('   redraw')
-    utils.tprint(item.json)
     local content = _.clone(item.json)
     self:deleteFromLevel(item)
     self:addToLevel(content)
@@ -342,25 +335,26 @@ end
 function LevelBuilder:tapOnItem(item, event)
     print('tapOnItem')
     if(app.selectedItem) then
-        print('selection : ')
-        utils.tprint(app.selectedItem)
         if(app.selectedItem.json.name == 'room') then
             if(item.json.name == 'room') then
                 Tools.selectItem(item)
             end
         else
             local direction = self:findDirectionOnRoom(item, event)
-
+            print('---> ' .. direction)
             if(direction ~= CENTER and app.selectedItem.json.name == 'wall') then
                 local jsonItem = _.clone(app.selectedItem.json)
                 _.extend(jsonItem, {
-                    rotation = direction
+                    direction = direction
                 })
 
                 if(not item.json.children) then item.json.children = {} end
                 item.json.children[#item.json.children + 1] = jsonItem
 
                 self:redraw(item)
+            else
+                print('no wall on center')
+                Tools.selectItem(item)
             end
          end
     else
