@@ -310,23 +310,35 @@ function LevelBuilder:tapOnItem(item, event)
             end
         else
             local direction = self:findDirectionOnRoom(item, event)
-            if(direction ~= CENTER and app.selectedItem.json.name == 'wall') then
-                local jsonItem = _.clone(app.selectedItem.json)
-                _.extend(jsonItem, {
-                    direction = direction
-                })
 
-                if(not item.json.children) then item.json.children = {} end
-                item.json.children[#item.json.children + 1] = jsonItem
+            if(app.selectedItem.json.name == 'wall') then
+               self:addWall(item, direction)
 
-                self:redraw(item)
-            else
-                print('no wall on center')
-                Tools.selectItem(item)
+            elseif(app.selectedItem.json.name == 'door') then
+               self:addWall(item, direction)
+
             end
          end
     else
         print('nothing')
+        Tools.selectItem(item)
+    end
+end
+--------------------------------------------------------------------------------
+
+function LevelBuilder:addWall(item, direction)
+     if(direction ~= CENTER) then
+        local jsonItem = _.clone(app.selectedItem.json)
+        _.extend(jsonItem, {
+            direction = direction
+        })
+
+        if(not item.json.children) then item.json.children = {} end
+        item.json.children[#item.json.children + 1] = jsonItem
+
+        self:redraw(item)
+    else
+        print('no wall on center')
         Tools.selectItem(item)
     end
 end
