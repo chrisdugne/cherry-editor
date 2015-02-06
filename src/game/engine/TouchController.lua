@@ -53,6 +53,7 @@ function drag (o, event, options)
         o.startY = o.y
 
     elseif event.phase == 'moved' then
+        if(not o.startX) then return end
         if(not o.markX) then o.markX = o.x end
         if(not o.markY) then o.markY = o.y end
 

@@ -216,6 +216,14 @@ function LevelBuilder:addChildren(jsonItems, parentItem)
             item.rotation = (90 * (child.direction - 1))
         end
 
+        if(child.name == 'door') then
+            local mask = graphics.newMask('assets/images/game/door/mask.4editor.png')
+            item:setMask(mask)
+            utils.onTouch(item, function(event)
+                print('DOOR -> toggle door open/closed')
+            end)
+        end
+
         if(not parentItem.children) then parentItem.children = {} end
         parentItem.children[#parentItem.children + 1] = item
 
@@ -315,7 +323,7 @@ function LevelBuilder:tapOnItem(item, event)
                self:addWall(item, direction)
 
             elseif(app.selectedItem.json.name == 'door') then
-               self:addWall(item, direction)
+               self:addDoor(item, direction)
 
             end
          end
@@ -324,22 +332,42 @@ function LevelBuilder:tapOnItem(item, event)
         Tools.selectItem(item)
     end
 end
+
 --------------------------------------------------------------------------------
 
-function LevelBuilder:addWall(item, direction)
+function LevelBuilder:addWall(parent, direction)
      if(direction ~= CENTER) then
-        local jsonItem = _.clone(app.selectedItem.json)
-        _.extend(jsonItem, {
+        local jsonWall = _.clone(app.selectedItem.json)
+        _.extend(jsonWall, {
             direction = direction
         })
 
-        if(not item.json.children) then item.json.children = {} end
-        item.json.children[#item.json.children + 1] = jsonItem
+        if(not parent.json.children) then parent.json.children = {} end
+        parent.json.children[#parent.json.children + 1] = jsonWall
 
-        self:redraw(item)
+        self:redraw(parent)
     else
         print('no wall on center')
-        Tools.selectItem(item)
+        Tools.selectItem(parent)
+    end
+end
+
+--------------------------------------------------------------------------------
+
+function LevelBuilder:addDoor(parent, direction)
+     if(direction ~= CENTER) then
+        local jsonDoor = _.clone(app.selectedItem.json)
+        _.extend(jsonDoor, {
+            direction = direction
+        })
+
+        if(not parent.json.children) then parent.json.children = {} end
+        parent.json.children[#parent.json.children + 1] = jsonDoor
+
+        self:redraw(parent)
+    else
+        print('no wall on center')
+        Tools.selectItem(parent)
     end
 end
 
