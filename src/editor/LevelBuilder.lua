@@ -86,31 +86,6 @@ end
 
 --------------------------------------------------------------------------------
 
---- load a json item
-function LevelBuilder:loadJSONItem(jsonItem)
-
-
- -- TODO
-
-
-
-    local item = display.newImage(
-        app.screen.level,
-        Tools.imagePath(jsonItem)
-    )
-
-    item.data = jsonItem
-    item.name = jsonItem.item
-
-    if(app.screen.grid) then
-        self:addToLevel(item)
-    else
-        self:addFloatingItem(item, jsonItem.x, jsonItem.y)
-    end
-end
-
---------------------------------------------------------------------------------
-
 function LevelBuilder:import()
     print('------ Importing ' .. LEVELS_FOLDER .. IMPORT_LEVEL)
     self:reset()
@@ -127,7 +102,7 @@ function LevelBuilder:import()
     if(level.grid) then
         Tools.toggleSnapGrid()
         for k,jsonItem in pairs(level.items) do
-            self:loadJSONItem(jsonItem)
+            self:addToLevel(jsonItem)
         end
     end
 end
@@ -195,9 +170,6 @@ end
 --      y
 --  }
 function LevelBuilder:addToLevel(jsonItem, selection)
-
-    print('============ addToLevel')
-    utils.tprint(jsonItem)
 
     local item = display.newImage(
         app.screen.level,
@@ -318,8 +290,6 @@ end
 
 -- tap on level
 function LevelBuilder.tapOnLevel(event)
-    print('tapOnLevel')
-    utils.tprint(app.selectedItem)
     if(app.selectedItem) then
         if(app.selectedItem.json.name == 'room') then
             if(app.screen.grid) then
@@ -333,7 +303,6 @@ end
 
 -- tap on level
 function LevelBuilder:tapOnItem(item, event)
-    print('tapOnItem')
     if(app.selectedItem) then
         if(app.selectedItem.json.name == 'room') then
             if(item.json.name == 'room') then
@@ -341,7 +310,6 @@ function LevelBuilder:tapOnItem(item, event)
             end
         else
             local direction = self:findDirectionOnRoom(item, event)
-            print('---> ' .. direction)
             if(direction ~= CENTER and app.selectedItem.json.name == 'wall') then
                 local jsonItem = _.clone(app.selectedItem.json)
                 _.extend(jsonItem, {
@@ -419,7 +387,7 @@ function LevelBuilder:addGridItem(item)
     })
 
     if(not self.items[gridX]) then self.items[gridX] = {} end
-    self.items[gridX][gridY] = item.data
+    self.items[gridX][gridY] = item.json
 
 end
 
