@@ -3,7 +3,7 @@
 --------------------------------------------------------------------------------
 
 local Menu = {}
-local items = {'room', 'door', 'wall'}
+local items = {'room', 'door', 'wall', 'frog'}
 local currentList = 0
 
 --------------------------------------------------------------------------------
@@ -105,6 +105,7 @@ end
 --------------------------------------------------------------------------------
 
 function list(name)
+
     if(app.menu.list) then
         display.remove(app.menu.list)
     end
@@ -119,7 +120,10 @@ function list(name)
     local folder  = baseDir .. 'assets/images/game/' .. name
 
     for file in lfs.dir(folder) do
-        if(utils.string.startsWith(file, name)) then
+        local isSheet = string.find(file, 'sheet')
+        local isItem = utils.string.startsWith(file, name)
+
+        if(isItem and not isSheet) then
             local params = utils.split(file, '.')
             local item   = display.newImage(
                 app.menu.list,
