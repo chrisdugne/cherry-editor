@@ -63,6 +63,9 @@ function App:prepareGlobals()
     TOOLBAR_WIDTH  = display.contentWidth
     TOOLBAR_HEIGHT = display.contentHeight * 0.1
 
+    -------------------------------------------
+    -- COPYING GAME MODEL CONSTANTS
+
     Room = {
         TOP    = 1,
         RIGHT  = 2,
@@ -73,6 +76,12 @@ function App:prepareGlobals()
         HEIGHT = 100
     }
 
+    Door = {
+        OPEN   = 1,
+        CLOSED = 2,
+
+        WIDTH = 50
+    }
 end
 
 --------------------------------------------------------------------------------

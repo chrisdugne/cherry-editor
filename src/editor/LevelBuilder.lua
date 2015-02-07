@@ -68,7 +68,7 @@ function LevelBuilder:dropItemOnGrid(event)
         y = gridY
     })
 
-    self:addToLevel(jsonItem)
+    self:drawOnLevel(jsonItem)
 end
 
 --------------------------------------------------------------------------------
@@ -102,7 +102,7 @@ function LevelBuilder:import()
     if(level.grid) then
         Tools.toggleSnapGrid()
         for k,jsonItem in pairs(level.items) do
-            self:addToLevel(jsonItem)
+            self:drawOnLevel(jsonItem)
         end
     end
 end
@@ -169,7 +169,7 @@ end
 --      x,
 --      y
 --  }
-function LevelBuilder:addToLevel(jsonItem, selection)
+function LevelBuilder:drawOnLevel(jsonItem, selection)
 
     local item = display.newImage(
         app.screen.level,
@@ -188,7 +188,7 @@ function LevelBuilder:addToLevel(jsonItem, selection)
 
     ------------------
 
-    self:addChildren(item.json.children, item)
+    self:drawChildren(item.json.children, item)
 
     ------------------
 
@@ -199,36 +199,59 @@ end
 
 --------------------------------------------------------------------------------
 
-function LevelBuilder:addChildren(jsonItems, parentItem)
+function LevelBuilder:drawChildren(jsonItems, parentItem)
     if(not jsonItems) then return end
 
     for k, child in pairs(jsonItems) do
+
         local item = display.newImage(
             app.screen.level,
             Tools.imagePath(child)
         )
 
-        item.json = child
-        item.x = parentItem.x
-        item.y = parentItem.y
+        ---------------
+
+        item.json          = child
+        item.parentItem    = parentItem
+        item.x             = parentItem.x
+        item.y             = parentItem.y
+
+        if(not parentItem.children) then parentItem.children = {} end
+        parentItem.children[#parentItem.children + 1] = item
+
+        ---------------
 
         if(child.direction) then
             item.rotation = (90 * (child.direction - 1))
         end
 
         if(child.name == 'door') then
-            local mask = graphics.newMask('assets/images/game/door/mask.4editor.png')
-            item:setMask(mask)
-            utils.onTouch(item, function(event)
-                print('DOOR -> toggle door open/closed')
-            end)
+            self:drawDoor(item)
         end
 
-        if(not parentItem.children) then parentItem.children = {} end
-        parentItem.children[#parentItem.children + 1] = item
+        ---------------
 
-        self:addChildren(child.children, child)
+        self:drawChildren(child.children, child)
+
     end
+end
+
+--------------------------------------------------------------------------------
+
+-- door = item = display.newImage
+function LevelBuilder:drawDoor(door)
+    local mask = graphics.newMask('assets/images/game/door/mask.4editor.png')
+    door.alpha = door.json.state * 0.5
+    door:setMask(mask)
+    utils.onTouch(door, function(event)
+        if(door.json.state == Door.OPEN) then
+            door.json.state = Door.CLOSED
+        else
+            door.json.state = Door.OPEN
+        end
+
+        self:redraw(door.parentItem)
+    end)
 end
 
 --------------------------------------------------------------------------------
@@ -258,7 +281,7 @@ end
 function LevelBuilder:redraw(item)
     local content = _.clone(item.json)
     self:deleteFromLevel(item)
-    self:addToLevel(content)
+    self:drawOnLevel(content)
 end
 
 --------------------------------------------------------------------------------
@@ -281,7 +304,7 @@ function LevelBuilder:addDragToGridItem(item)
             y = gridY
         })
 
-        self:addToLevel(newItem, true)
+        self:drawOnLevel(newItem, true)
     end
 
     local onDragStart = function(event)
@@ -355,16 +378,19 @@ end
 --------------------------------------------------------------------------------
 
 function LevelBuilder:addDoor(parent, direction)
+
      if(direction ~= CENTER) then
         local jsonDoor = _.clone(app.selectedItem.json)
         _.extend(jsonDoor, {
-            direction = direction
+            direction = direction,
+            state     = Door.CLOSED
         })
 
         if(not parent.json.children) then parent.json.children = {} end
         parent.json.children[#parent.json.children + 1] = jsonDoor
 
         self:redraw(parent)
+
     else
         print('no wall on center')
         Tools.selectItem(parent)
