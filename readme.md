@@ -4,7 +4,7 @@
 This is a base for your own tiled level editor :
 - 1 - Code your own content
 - 2 - Use your Corona Simulator to design the levels for your game.
-- 3 - Import/Export json content from/to your [corona-starter](https://github.com/chrisdugne/corona-starter) game.
+- 3 - Import/Export json content from/to your [Cherry](https://github.com/chrisdugne/cherry) game.
 
 ## Features
 - import/export json
